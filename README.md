@@ -1,5 +1,10 @@
 # Running PB-backend and PB-frontend repositories in local system
 
+## needed installed packages in used system:
+ * php <- php -v -> 8.4+
+ * composer <- composer --version -> 2.8+
+ * node <- node -v -> 25+
+
 ## PB-Backend
 1. git clone https://github.com/vanemarendajaks-team15/pb-backend.git
 2. go to repository folder
