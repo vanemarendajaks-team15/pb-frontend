@@ -9,8 +9,8 @@
 1. git clone https://github.com/vanemarendajaks-team15/pb-backend.git
 2. go to repository folder
     * cd pb-backend
-3. create environment file 
-    * copy and paste .env.example file and rename it to .env
+3. create environment file with terminal command
+    * cp .env.example .env
 4. run commands in terminal
     * php artisan key:generate <- generates application key in .env file
     * php artisan migrate <- migrates user etc tables into sqlite
@@ -22,8 +22,8 @@
 1. git clone https://github.com/vanemarendajaks-team15/pb-frontend.git
 2. go to repository folder
    * cd pb-frontend
-3. create environment file
-   * copy and paste .env.example file and rename it to .env
+3. create environment file with terminal command
+    * cp .env.example .env
 4. run commands in terminal
    * npm i <- installs npm
    * composer i <- installs composer
