@@ -1,9 +1,56 @@
 # Running PB-backend and PB-frontend repositories in local system
 
-## needed installed packages in used system:
- * php <- php -v -> 8.4+
- * composer <- composer --version -> 2.8+
- * node <- node -v -> 25+
+## Laravel 13 min requirements:
+ * php <- php -v >= 8.3
+ * composer <- composer --version >= 2.7
+ * node.js <- node -v >= 18.x
+ * PostgresSQL 13+
+
+## PHP extensions
+ * openssl
+ * pdo
+ * mbstring
+ * tokenizer
+ * xml
+ * ctype
+ * json
+ * bcmath
+ * fileinfo
+
+## macOS installation
+1. Install Homebrew
+    * /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+2. Install PHP 8.3 (or newer)
+   * brew install php@8.3
+   * brew link php@8.3 --force
+   * php -v
+3. Install Composer
+   * brew install composer
+   * composer --version
+4. Install Node.js (LTS)
+   * brew install node
+   * node -v
+   * npm -v
+
+## Ubuntu 24.04 install
+1. Update system
+   * sudo apt update && sudo apt upgrade -y
+2. Install PHP 8.3 + extensions
+   * sudo apt install php8.3 php8.3-cli php8.3-common php8.3-mbstring \
+   * php8.3-xml php8.3-bcmath php8.3-curl php8.3-zip php8.3-sqlite3 \
+   * php8.3-mysql unzip curl git -y
+3. Check PHP version
+   * php -v
+4. Install Composer
+   * sudo apt install composer -y
+   * composer --version
+5. Install Node.js
+   * curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   * source ~/.bashrc
+6. Install Node 20 (LTS)
+    * nvm install 20
+    * nvm use 20
+    * node -v
 
 ## PB-Backend
 1. git clone https://github.com/vanemarendajaks-team15/pb-backend.git
