@@ -20,7 +20,7 @@
 ## macOS installation
 1. Install Homebrew
     * /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-2. Install PHP 8.3 (or newer)
+2. Install PHP 8.3 (or newer, change php version)
    * brew install php@8.3
    * brew link php@8.3 --force
    * php -v
@@ -35,7 +35,7 @@
 ## Ubuntu 24.04 install
 1. Update system
    * sudo apt update && sudo apt upgrade -y
-2. Install PHP 8.3 + extensions
+2. Install PHP 8.3 + extensions (or newer, change php version)
    * sudo apt install php8.3 php8.3-cli php8.3-common php8.3-mbstring \
    * php8.3-xml php8.3-bcmath php8.3-curl php8.3-zip php8.3-sqlite3 \
    * php8.3-mysql unzip curl git -y
