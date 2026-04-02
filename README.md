@@ -83,9 +83,9 @@
  * You should see laravel 13 welcome page in your browser @ http://127.0.0.1:8001/
 
 ## Running the project
- 1. start apache server for backend
+1. start apache server for backend
    * php artisan serve
 2. start development environment for frontend
-    * npm run dev
+   * npm run dev
 3. start apache server for frontend
-    php artisan serve
+   * php artisan serve
