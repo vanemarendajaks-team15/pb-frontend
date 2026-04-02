@@ -52,7 +52,7 @@
     * nvm use 20
     * node -v
 
-## PB-Backend
+## PB-Backend setting up
 1. git clone https://github.com/vanemarendajaks-team15/pb-backend.git
 2. go to repository folder
     * cd pb-backend
@@ -65,7 +65,7 @@
 ### Backend should run on port 8000
 * you should see laravel version text in your browser @ http://127.0.0.1:8000/
 
-## PB-Frontend
+## PB-Frontend setting up
 1. git clone https://github.com/vanemarendajaks-team15/pb-frontend.git
 2. go to repository folder
    * cd pb-frontend
@@ -81,3 +81,11 @@
    * pht artisan serve <- runs artisan server on port 8001 <- back runs already on port 8000
 ### Frontend should run on port 8000
  * You should see laravel 13 welcome page in your browser @ http://127.0.0.1:8001/
+
+## Running the project
+ 1. start apache server for backend
+   * php artisan serve
+2. start development environment for frontend
+    * npm run dev
+3. start apache server for frontend
+    php artisan serve
