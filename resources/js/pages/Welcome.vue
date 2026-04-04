@@ -2,10 +2,10 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { dashboard, login, register } from '@/routes';
 
-defineOptions({
+defineProps({
+    canRegister: true,
     layout: {
         hideNavigation: true,
-        canRegister: true,
     },
 });
 </script>
