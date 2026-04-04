@@ -1,5 +1,4 @@
-<script setup lang="ts">
-import type { SidebarProps } from "."
+<script setup lang="js">
 import { cn } from "@/lib/utils"
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import SheetDescription from '@/components/ui/sheet/SheetDescription.vue'
@@ -9,12 +8,6 @@ import { SIDEBAR_WIDTH_MOBILE, useSidebar } from "./utils"
 
 defineOptions({
   inheritAttrs: false,
-})
-
-const props = withDefaults(defineProps<SidebarProps>(), {
-  side: "left",
-  variant: "sidebar",
-  collapsible: "offcanvas",
 })
 
 const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
