@@ -29,8 +29,7 @@ export default defineConfigWithVueTs(
         settings: {
             'import/resolver': {
                 typescript: {
-                    alwaysTryTypes: true,
-                    project: './tsconfig.json',
+                    alwaysTryTypes: true
                 },
                 node: true,
             },
@@ -80,7 +79,7 @@ export default defineConfigWithVueTs(
             'public',
             'bootstrap/ssr',
             'tailwind.config.js',
-            'vite.config.ts',
+            'vite.config.js',
             'resources/js/actions/**',
             'resources/js/components/ui/*',
             'resources/js/routes/**',
