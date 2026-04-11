@@ -1,47 +1,61 @@
-<script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
-import TextLink from '@/components/TextLink.vue';
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
-import { logout } from '@/routes';
-import { send } from '@/routes/verification';
+<script setup>
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 
-defineOptions({
-    layout: {
-        title: 'Verify email',
-        description:
-            'Please verify your email address by clicking on the link we just emailed to you.',
+defineProps({
+    status: {
+        type: String,
+        default: null,
     },
 });
 
-defineProps<{
-    status?: string;
-}>();
+const form = useForm({});
+
+function resend() {
+    form.post('/email/verification-notification');
+}
+
+function logout() {
+    router.post('/logout');
+}
 </script>
 
 <template>
-    <Head title="Email verification" />
+    <Head title="Verify email" />
 
-    <div
-        v-if="status === 'verification-link-sent'"
-        class="mb-4 text-center text-sm font-medium text-green-600"
-    >
-        A new verification link has been sent to the email address you provided
-        during registration.
+    <div class="page">
+        <div class="stack stack--lg">
+            <h1>Verify your email</h1>
+            <p class="muted">
+                Thanks for signing up! Before getting started, please verify
+                your email by clicking the link we emailed you. If you did not
+                receive the email, we will gladly send another.
+            </p>
+
+            <div v-if="status" class="status" role="status">
+                {{ status }}
+            </div>
+
+            <div class="row">
+                <button
+                    class="btn btn--primary"
+                    type="button"
+                    :disabled="form.processing"
+                    @click="resend"
+                >
+                    Resend verification email
+                </button>
+            </div>
+
+            <div class="row">
+                <button
+                    class="btn btn--secondary"
+                    type="button"
+                    @click="logout"
+                >
+                    Log out
+                </button>
+                <Link href="/">Home</Link>
+            </div>
+        </div>
     </div>
-
-    <Form
-        v-bind="send.form()"
-        class="space-y-6 text-center"
-        v-slot="{ processing }"
-    >
-        <Button :disabled="processing" variant="secondary">
-            <Spinner v-if="processing" />
-            Resend verification email
-        </Button>
-
-        <TextLink :href="logout()" as="button" class="mx-auto block text-sm">
-            Log out
-        </TextLink>
-    </Form>
 </template>
