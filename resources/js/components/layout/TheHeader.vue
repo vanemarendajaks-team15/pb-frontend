@@ -1,6 +1,8 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import TheHeader from '@/components/layout/TheHeader.vue';
+
+
+// vajaks mudimist autentimise osas!
 
 defineProps({
     canRegister: {
@@ -9,18 +11,11 @@ defineProps({
     },
 });
 </script>
-
 <template>
-    <div>
-        <Head title="Welcome" />
-        <TheHeader />
-        <div class="page">
-            <div class="stack stack--lg">
-                <h1>Main view</h1>
-                <p class="muted">
-                    You are ready to build Vue 3 pages with Inertia and Laravel.
-                </p>
-                <div class="row">
+    <header class="app-header" role="banner">
+        <div class="row">
+            <h1>The Header</h1>
+            <div class="buttons">
                     <Link class="btn btn--primary" href="/login">Log in</Link>
                     <Link
                         v-if="canRegister"
@@ -31,6 +26,21 @@ defineProps({
                     </Link>
                 </div>
             </div>
-        </div>
-    </div>
+    </header>
 </template>
+
+<style scoped>
+.app-header {
+    background-color: #abf0d1;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+.buttons {
+    margin-left: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    align-items: right;
+}
+</style>

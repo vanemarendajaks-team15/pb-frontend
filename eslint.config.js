@@ -20,43 +20,35 @@ const paddingAroundControl = [
     ]),
 ];
 
-export default defineConfigWithVueTs(
-    vue.configs['flat/essential'],
+export default [
+    ...vue.configs['flat/essential'],
     {
         plugins: {
             import: importPlugin,
         },
         settings: {
             'import/resolver': {
-                typescript: {
-                    alwaysTryTypes: true
-                },
                 node: true,
             },
         },
         rules: {
             'vue/multi-word-component-names': 'off',
-            '@typescript-eslint/no-explicit-any': 'off',
-            '@typescript-eslint/consistent-type-imports': [
-                'error',
-                {
-                    prefer: 'type-imports',
-                    fixStyle: 'separate-type-imports',
-                },
-            ],
             'import/order': [
                 'error',
                 {
-                    groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                    groups: [
+                        'builtin',
+                        'external',
+                        'internal',
+                        'parent',
+                        'sibling',
+                        'index',
+                    ],
                     alphabetize: {
                         order: 'asc',
                         caseInsensitive: true,
                     },
                 },
-            ],
-            'import/consistent-type-specifier-style': [
-                'error',
-                'prefer-top-level',
             ],
         },
     },
@@ -78,7 +70,6 @@ export default defineConfigWithVueTs(
             'node_modules',
             'public',
             'bootstrap/ssr',
-            'tailwind.config.js',
             'vite.config.js',
             'resources/js/actions/**',
             'resources/js/components/ui/*',
@@ -86,7 +77,7 @@ export default defineConfigWithVueTs(
             'resources/js/wayfinder/**',
         ],
     },
-    prettier, // Turn off all rules that might conflict with Prettier
+    prettier,
     {
         plugins: {
             '@stylistic': stylistic,
@@ -96,4 +87,4 @@ export default defineConfigWithVueTs(
             '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: false }],
         },
     },
-);
+];

@@ -1,15 +1,26 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
+
+const props = defineProps({
+    token: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        default: '',
+    },
+});
 
 const form = useForm({
-    name: '',
-    email: '',
+    token: props.token,
+    email: props.email,
     password: '',
     password_confirmation: '',
 });
 
 function submit() {
-    form.post('/register', {
+    form.post('/reset-password', {
         onFinish: () => {
             form.reset('password', 'password_confirmation');
         },
@@ -18,28 +29,13 @@ function submit() {
 </script>
 
 <template>
-    <Head title="Register" />
+    <Head title="Reset password" />
 
     <div class="page">
         <div class="stack stack--lg">
-            <h1>Register</h1>
+            <h1>Reset password</h1>
 
             <form class="stack" @submit.prevent="submit">
-                <div class="field">
-                    <label for="name">Name</label>
-                    <input
-                        id="name"
-                        v-model="form.name"
-                        type="text"
-                        name="name"
-                        required
-                        autocomplete="name"
-                    />
-                    <span v-if="form.errors.name" class="error">{{
-                        form.errors.name
-                    }}</span>
-                </div>
-
                 <div class="field">
                     <label for="email">Email</label>
                     <input
@@ -48,7 +44,7 @@ function submit() {
                         type="email"
                         name="email"
                         required
-                        autocomplete="email"
+                        autocomplete="username"
                     />
                     <span v-if="form.errors.email" class="error">{{
                         form.errors.email
@@ -56,7 +52,7 @@ function submit() {
                 </div>
 
                 <div class="field">
-                    <label for="password">Password</label>
+                    <label for="password">New password</label>
                     <input
                         id="password"
                         v-model="form.password"
@@ -87,13 +83,9 @@ function submit() {
                     type="submit"
                     :disabled="form.processing"
                 >
-                    Register
+                    Reset password
                 </button>
             </form>
-
-            <div class="row">
-                <Link href="/login">Already registered?</Link>
-            </div>
         </div>
     </div>
 </template>

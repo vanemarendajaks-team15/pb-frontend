@@ -1,0 +1,200 @@
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: #171717;
+    background-color: #fafafa;
+}
+
+html.dark body {
+    color: #fafafa;
+    background-color: #171717;
+}
+
+.app-body {
+    margin: 0;
+    min-height: 100vh;
+}
+
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+html.dark a {
+    color: #93c5fd;
+}
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.stack--lg {
+    gap: 1.5rem;
+}
+
+.page {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.page--wide {
+    max-width: 56rem;
+}
+
+.muted {
+    color: #737373;
+    font-size: 0.875rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.field label {
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.field input,
+.field textarea,
+.field select {
+    padding: 0.5rem 0.65rem;
+    border: 1px solid #d4d4d4;
+    border-radius: 0.375rem;
+    font: inherit;
+    background: #fff;
+    color: inherit;
+}
+
+html.dark .field input,
+html.dark .field textarea,
+html.dark .field select {
+    border-color: #404040;
+    background: #262626;
+}
+
+.field .error {
+    color: #dc2626;
+    font-size: 0.8125rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.5rem 1rem;
+    font: inherit;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn--primary {
+    background: #2563eb;
+    color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.btn--secondary {
+    background: #f5f5f5;
+    border-color: #d4d4d4;
+    color: #171717;
+}
+
+html.dark .btn--secondary {
+    background: #262626;
+    border-color: #404040;
+    color: #fafafa;
+}
+
+.btn--danger {
+    background: #dc2626;
+    color: #fff;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 1.5rem;
+}
+
+html.dark .nav {
+    border-bottom-color: #404040;
+}
+
+.nav a {
+    font-weight: 500;
+}
+
+.nav-spacer {
+    flex: 1;
+}
+
+.status {
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.375rem;
+    background: #ecfdf5;
+    color: #065f46;
+    font-size: 0.875rem;
+}
+
+html.dark .status {
+    background: #064e3b;
+    color: #a7f3d0;
+}
+
+.card {
+    padding: 1.25rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+
+html.dark .card {
+    border-color: #404040;
+    background: #1f1f1f;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
