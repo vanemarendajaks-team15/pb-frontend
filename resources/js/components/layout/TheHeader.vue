@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import AuthButton from '../buttons/AuthButton.vue';
 
 
 // vajaks mudimist autentimise osas!
@@ -7,23 +7,21 @@ import { Head, Link } from '@inertiajs/vue3';
 defineProps({
     canRegister: {
         type: Boolean,
-        default: false,
+        default: true,  // vaikimisi arenduse jaoks määratud true NB! Ei saa arendada enne, kui userStore KAN-43 mestimata
     },
 });
 </script>
 <template>
     <header class="app-header" role="banner">
         <div class="row">
-            <h1>The Header</h1>
+            <h1>Saare Pickleball</h1>
             <div class="buttons">
-                    <Link class="btn btn--primary" href="/login">Log in</Link>
-                    <Link
-                        v-if="canRegister"
-                        class="btn btn--secondary"
-                        href="/register"
-                    >
-                        Register
-                    </Link>
+                <div class="buttons" v-if="canRegister">
+                    <AuthButton label="Log in" href="/login" />
+                    <AuthButton label="Register" href="/register" v-if="canRegister"/>
+                </div>
+                <!-- Siin näita ka isiku nime, kui arendus sinnani jõudnud on -->
+                <AuthButton v-else label="Log out" href="/logout"></AuthButton>
                 </div>
             </div>
     </header>
