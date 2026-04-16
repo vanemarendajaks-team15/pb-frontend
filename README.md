@@ -75,6 +75,7 @@
    * npm i <- installs npm
    * composer i <- installs composer
    * npm run dev <i runs vite.js server
+   * composer run dev <- Starts application 
 5. open another terminal and run command
    * php artisan key:generate <- generates app key
    * php artisan migrate <- migrates database
