@@ -14,9 +14,10 @@ defineProps({
 <template>
     <header class="app-header" role="banner">
         <div class="row">
-            <h1>Saare Pickleball</h1>
+            <img src="../../assets/ball.png" alt="Pickleball ball" width="80px"/>
+            <h1>PICKLEBALL LIVESCORE</h1>
             <div class="buttons">
-                <div class="buttons" v-if="canRegister">
+                <div class="double-buttons" v-if="canRegister">
                     <AuthButton label="Log in" href="/login" />
                     <AuthButton label="Register" href="/register" v-if="canRegister"/>
                 </div>
@@ -33,12 +34,24 @@ defineProps({
     padding: 1rem;
     border-bottom: 1px solid #e0e0e0;
 }
-.buttons {
+.double-buttons, .buttons {
     margin-left: auto;
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-end;
     gap: 0.75rem;
     align-items: right;
+}
+.row {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
 }
 </style>
