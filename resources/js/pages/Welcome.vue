@@ -1,6 +1,14 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
+import { useTournamentStore } from '../features/tournaments/tournamentStore';
 import TheHeader from '@/components/layout/TheHeader.vue';
+
+const tournamentStore = useTournamentStore();
+
+onMounted(() => {
+    tournamentStore.loadHomepageTournaments();
+})
 
 defineProps({
     canRegister: {
@@ -8,6 +16,9 @@ defineProps({
         default: false,
     },
 });
+
+
+
 </script>
 
 <template>
