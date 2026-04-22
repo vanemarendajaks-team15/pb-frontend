@@ -1,8 +1,21 @@
+
+<template>
+    <div class="welcome">
+        <Head title="Welcome" />
+        <TheHeader />
+        <main class="welcome__main page page--wide">
+            <TournamentsList />
+        </main>
+    </div>
+</template>
+
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
+import TournamentsList from '../components/tournaments/TournamentsList.vue';
 import { useTournamentStore } from '../features/tournaments/tournamentStore';
 import TheHeader from '@/components/layout/TheHeader.vue';
+
 
 const tournamentStore = useTournamentStore();
 
@@ -10,38 +23,11 @@ onMounted(() => {
     tournamentStore.loadHomepageTournaments();
 })
 
-defineProps({
-    canRegister: {
-        type: Boolean,
-        default: false,
-    },
-});
-
-
-
 </script>
 
-<template>
-    <div>
-        <Head title="Welcome" />
-        <TheHeader />
-        <div class="page">
-            <div class="stack stack--lg">
-                <h1>Main view</h1>
-                <p class="muted">
-                    You are ready to build Vue 3 pages with Inertia and Laravel.
-                </p>
-                <div class="row">
-                    <Link class="btn btn--primary" href="/login">Log in</Link>
-                    <Link
-                        v-if="canRegister"
-                        class="btn btn--secondary"
-                        href="/register"
-                    >
-                        Register
-                    </Link>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
+<style scoped>
+.welcome__main {
+    width: 100%;
+    padding-top: 1rem;
+}
+</style>
