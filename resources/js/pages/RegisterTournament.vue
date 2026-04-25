@@ -58,7 +58,7 @@ import AuthButton from '../components/buttons/AuthButton.vue';
 import TheHeader from '../components/layout/TheHeader.vue';
 import BaseCard from '../components/ui/BaseCard.vue';
 import { CLOUDFLARE_FOLDER_NAMES } from '../features/constants';
-import { registerTournament } from '../features/tournaments/tournamentApi';
+import { registerTournament, uploadPosterToR2 } from '../features/tournaments/tournamentApi';
 import { generateUniqueFileName } from '../features/tournaments/utils';
 import { useUserStore } from '../features/user/userStore';
 
@@ -125,6 +125,7 @@ function validateField(field) {
 
 async function submitForm() {
     const isValid = validateForm();
+    const posterFile = tournamentData.value.image.value;
 
     if (isValid) {
         const dataForm = {
@@ -146,12 +147,11 @@ async function submitForm() {
             return;
         }
         
-        try {
-            const response = await registerTournament(dataForm, tournamentData.value.image.value);
-            console.log('response', response);
-        } catch (error) {
-            console.error('error', error);
-        }
+        const response = await registerTournament(dataForm);
+        
+        if (posterFile && dataForm.posterReference && response) {
+			await uploadPosterToR2(dataForm.posterReference, posterFile);
+		}
     } else {
         alert('Form is not valid');
     }
@@ -219,9 +219,8 @@ function validateForm() {
 
     if (tournamentData.value.description.value && tournamentData.value.description.value.length < 10) {
         tournamentData.value.description.isValid = false;
+        tournamentData.value.formIsValid = false;
     }
-    
-    return tournamentData.value.formIsValid;
 };
 
 </script>

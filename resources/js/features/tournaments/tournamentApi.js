@@ -72,20 +72,15 @@ export const fetchTournaments = async (status) => {
     }
 };
 
-export const registerTournament = async (payload, posterFile) => {
+export const registerTournament = async (payload) => {
 	try {
-		console.log(payload);
 		const response = await api.post('/v1/tournament/register', { payload });
 
 		if (!REGISTER_SUCCESS_STATUSES.has(response.status)) {
 			throw new Error(`Failed to post new tournament: ${response.status}`);
 		}
 
-		if (posterFile && payload.posterReference) {
-			await uploadPosterToR2(payload.posterReference, posterFile);
-		}
-
-		return response.data;
+		return true;
 	} catch (error) {
 		console.error('Error registering tournament', error);
 

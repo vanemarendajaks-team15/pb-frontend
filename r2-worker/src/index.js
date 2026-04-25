@@ -48,4 +48,4 @@ export default {
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
       "Access-Control-Max-Age": "86400",
     };
-  }
+  };
