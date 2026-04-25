@@ -159,11 +159,18 @@ async function submitForm() {
 };
 
 function handleFileUpload(e) {
-    const uploadedFile = e.target.files[0];
+    const uploadedFile = e?.target?.files?.[0];
     validateFile(uploadedFile);
 };
 
 function validateFile(file) {
+    if (!file) {
+        tournamentData.value.image.isValid = true;
+        tournamentData.value.image.value = null;
+        tournamentData.value.image.fileName = '';
+
+        return true;
+    }
 
     if (!tournamentData.value.image.acceptedTypes.includes(file.type)) {
         tournamentData.value.image.isValid = false;
