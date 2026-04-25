@@ -221,6 +221,8 @@ function validateForm() {
         tournamentData.value.description.isValid = false;
         tournamentData.value.formIsValid = false;
     }
+
+    return tournamentData.value.formIsValid;
 };
 
 </script>
