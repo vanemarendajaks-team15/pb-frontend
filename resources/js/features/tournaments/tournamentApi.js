@@ -74,7 +74,7 @@ export const fetchTournaments = async (status) => {
 
 export const registerTournament = async (payload) => {
 	try {
-		const response = await api.post('/v1/tournament/register', { payload });
+		const response = await api.post('/v1/tournament/register', payload);
 
 		if (!REGISTER_SUCCESS_STATUSES.has(response.status)) {
 			throw new Error(`Failed to post new tournament: ${response.status}`);
