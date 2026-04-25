@@ -58,8 +58,11 @@ import AuthButton from '../components/buttons/AuthButton.vue';
 import TheHeader from '../components/layout/TheHeader.vue';
 import BaseCard from '../components/ui/BaseCard.vue';
 import { CLOUDFLARE_FOLDER_NAMES } from '../features/constants';
-import { registerTournament, uploadPosterToR2 } from '../features/tournaments/tournamentApi';
+import { registerTournament } from '../features/tournaments/tournamentApi';
 import { generateUniqueFileName } from '../features/tournaments/utils';
+import { useUserStore } from '../features/user/userStore';
+
+const userStore = useUserStore();
 
 
 const tournamentData = ref({
@@ -98,6 +101,13 @@ const tournamentData = ref({
         required: false,
         isValid: true
     },
+    userId: {
+        type: String,
+        value: userStore.user?.id || '',
+        required: true,
+        isValid: true,
+        message: 'User ID is required',
+    },
     image: {
         type: File,
         fileName: '',
@@ -114,7 +124,6 @@ function validateField(field) {
 }
 
 async function submitForm() {
-    console.log('submitForm');
     const isValid = validateForm();
 
     if (isValid) {
@@ -123,16 +132,19 @@ async function submitForm() {
             location: tournamentData.value.location.value,
             startDate: tournamentData.value.startDate.value,
             endDate: tournamentData.value.endDate.value,
-            description: tournamentData.value.description.value
+            description: tournamentData.value.description.value,
+            directorId: tournamentData.value.userId.value
         }
 
         if (tournamentData.value.image.isValid && tournamentData.value.image.fileName !== '') {
             dataForm.posterReference = tournamentData.value.image.fileName;
-            console.log('määrab payload reference:', dataForm.posterReference);
         }
 
-        // For temporary purpose only - move method to tournamentApi later if backend endpoint is ready
-        await uploadPosterToR2(dataForm.posterReference, tournamentData.value.image.value)
+        if (!tournamentData.value.userId.value) {
+            console.error('Cannot register tournament without user ID');
+            
+            return;
+        }
         
         try {
             const response = await registerTournament(dataForm, tournamentData.value.image.value);
@@ -140,8 +152,6 @@ async function submitForm() {
         } catch (error) {
             console.error('error', error);
         }
-
-        return dataForm; //temporary return for testing
     } else {
         alert('Form is not valid');
     }
@@ -156,31 +166,27 @@ function handleFileUpload(e) {
 function validateFile(file) {
 
     if (!tournamentData.value.image.acceptedTypes.includes(file.type)) {
-        console.log(`File type is not accepted. File type: ${file.type}`);
         tournamentData.value.image.isValid = false;
         tournamentData.value.image.value = '';
         tournamentData.value.image.fileName = '';
-        alert('File type is not accepted');
+        alert(`File type is not accepted. File type: ${file.type}`);
 
         return false;
     } else if (file.size > tournamentData.value.image.maxSize) {
-        console.log(`File size is too large to upload. File size: ${file.size}`);
         tournamentData.value.image.isValid = false;
         tournamentData.value.image.value = '';
         tournamentData.value.image.fileName = '';
-        alert('File size is too large to upload');
+        alert(`File size is too large to upload. File size: ${file.size}`);
 
         return false;
     } else {
         tournamentData.value.image.isValid = true;
         tournamentData.value.image.value = file;
         tournamentData.value.image.fileName = generateUniqueFileName(CLOUDFLARE_FOLDER_NAMES.TOURNAMENT_POSTERS, file.name);
-        console.log('validateFile OK');
     }
 };
 
 function validateForm() {
-    console.log('validateForm');
     tournamentData.value.formIsValid = true;
 
     if (tournamentData.value.name.value === '') {
@@ -206,10 +212,6 @@ function validateForm() {
 
     if (tournamentData.value.description.value && tournamentData.value.description.value.length < 10) {
         tournamentData.value.description.isValid = false;
-    }
-
-    if (tournamentData.value.formIsValid) {
-        console.log('form is valid');
     }
     
     return tournamentData.value.formIsValid;
@@ -248,7 +250,6 @@ input{
     height: 2rem;
     width: 100%;
     padding: 0.5rem;
-    /* margin-bottom: 1rem; */
     border-radius: 0.5rem;
     border: 1px solid #000000;
 }

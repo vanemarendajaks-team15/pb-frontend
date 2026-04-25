@@ -1,6 +1,6 @@
 <template>
   <Link v-if="href" :href="href" class="btn">{{ label }}</Link>
-  <button v-else :type="type" class="btn" @click="$emit('click', $event)">{{ label }}</button>
+  <button v-else :type="type" class="btn">{{ label }}</button>
 </template>
 
 <script setup>
@@ -21,13 +21,11 @@ defineProps({
   }
 });
 
-defineEmits(['click']);
 </script>
 
 <style scoped>
 .btn {
   padding: 10px 22px;
-  /* border-radius: 15px; */
   border: 1.5px solid #111;
   background: transparent;
   font-size: 15px;

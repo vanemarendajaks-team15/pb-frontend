@@ -40,6 +40,7 @@ export async function uploadPosterToR2(posterReference, file) {
 	}
 
 	const url = buildR2PutUrl(baseUrl, posterReference);
+	console.log('Builded url:', url);
 	const response = await fetch(url, {
 		method: 'PUT',
 		body: file,
@@ -66,7 +67,7 @@ export const fetchTournaments = async (status) => {
 
         return response.data;
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching tournaments', error);
 
         return [];
     }
@@ -76,11 +77,10 @@ export const registerTournament = async (payload, posterFile) => {
 	try {
 		console.log(payload);
 		const response = await api.post('/v1/tournament/register', { payload });
-        console.log('Jõuab apisse')
 
-		// if (!REGISTER_SUCCESS_STATUSES.has(response.status)) {
-		// 	throw new Error(`Failed to post new tournament: ${response.status}`);
-		// }
+		if (!REGISTER_SUCCESS_STATUSES.has(response.status)) {
+			throw new Error(`Failed to post new tournament: ${response.status}`);
+		}
 
 		if (posterFile && payload.posterReference) {
 			await uploadPosterToR2(payload.posterReference, posterFile);

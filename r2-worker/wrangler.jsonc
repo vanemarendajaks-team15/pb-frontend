@@ -16,7 +16,7 @@
 	],
 	"r2_buckets": [
 		{
-			"binding": "MY_BUCKET",
+			"binding": "R2_BUCKET",
 			"bucket_name": "pickleball"
 		}
 	]
