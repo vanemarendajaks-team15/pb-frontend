@@ -40,7 +40,6 @@ export async function uploadPosterToR2(posterReference, file) {
 	}
 
 	const url = buildR2PutUrl(baseUrl, posterReference);
-	console.log('Builded url:', url);
 	const response = await fetch(url, {
 		method: 'PUT',
 		body: file,
