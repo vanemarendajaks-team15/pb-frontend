@@ -4,31 +4,40 @@
     <div class="page">
         <BaseCard class="tournament-base-card">
             <div class="stack stack--lg">
-                <h1>Register Tournament</h1>
+                <h1>Register New Tournament</h1>
                 <BaseCard class="tournament-details">
                     <form @submit.prevent="submitForm">
                         <div class="field-long">
-                            <input type="text" id="name" name="name" placeholder="Tournament Name" v-model.trim="tournamentData.name.value" @blur="validateField('name')"/>
-                            <p v-if="!tournamentData.name.isValid" class="error">{{ tournamentData.name.message }}</p>
-                            <input type="text" id="location" name="location" placeholder="Tournament Location" v-model.trim="tournamentData.location.value" @blur="validateField('location')"/>
-                            <p v-if="!tournamentData.location.isValid" class="error">{{ tournamentData.location.message }}</p>
+                            <div class="field-long-item">
+                                <input type="text" :class="{invalid: !tournamentData.name.isValid}" id="name" name="name" placeholder="Tournament Name" v-model.trim="tournamentData.name.value" @blur="validateField('name')"/>
+                                <p v-if="!tournamentData.name.isValid" class="error">{{ tournamentData.name.message }}</p>
+                            </div>
+                            <div class="field-long-item">
+                                <input type="text" :class="{invalid: !tournamentData.location.isValid}" id="location" name="location" placeholder="Tournament Location" v-model.trim="tournamentData.location.value" @blur="validateField('location')"/>
+                                <p v-if="!tournamentData.location.isValid" class="error">{{ tournamentData.location.message }}</p>
+                            </div>
                         </div>
                         <div class="field-short">
-                            <input type="datetime-local" id="startDate" placeholder="Start Date" v-model.trim="tournamentData.startDate.value" @blur="validateField('startDate')">
-                            <p v-if="!tournamentData.startDate.isValid" class="error">{{ tournamentData.startDate.message }}</p>
-                            <input type="datetime-local" id="endDate" placeholder="End Date" v-model.trim="tournamentData.endDate.value" @blur="validateField('endDate')">
-                            <p v-if="!tournamentData.endDate.isValid" class="error">{{ tournamentData.endDate.message }}</p>
+                            <div class="field-short-item">
+                                <label for="startDate">Start Date:</label>
+                                <input type="datetime-local" :class="{invalid: !tournamentData.startDate.isValid}" id="startDate" v-model.trim="tournamentData.startDate.value" @blur="validateField('startDate')">
+                                <p v-if="!tournamentData.startDate.isValid" class="error">{{ tournamentData.startDate.message }}</p>
+                            </div>
+                            <div class="field-short-item">
+                                <label for="endDate">End Date:</label>
+                                <input type="datetime-local" :class="{invalid: !tournamentData.endDate.isValid}" id="endDate" v-model.trim="tournamentData.endDate.value" @blur="validateField('endDate')">
+                                <p v-if="!tournamentData.endDate.isValid" class="error">{{ tournamentData.endDate.message }}</p>
+                            </div>
                         </div>
                         <div class="field-long">
-                            <textarea id="description" placeholder="Tournament description (Optional)"
+                            <textarea :class="{invalid: !tournamentData.description.isValid}" id="description" placeholder="Tournament description (Optional)"
                              rows="4"
-                              v-model.trim="tournamentData.description.value"
-                               @blur="validateField('description')">
+                              v-model.trim="tournamentData.description.value">
                             </textarea>
                         </div>
                         <div class="upload-image">
-                            <p class="upload-image-text">Upload tournament poster (max 2MB)</p>
-                            <input type="file" id="image" placeholder="Upload Image" @change="handleFileUpload">
+                            <label for="image">Upload tournament poster (max 2MB)</label>
+                            <input type="file" :class="{invalid: !tournamentData.image.isValid}" id="image" placeholder="Upload Image" @change="handleFileUpload" @blur="validateField('image')">
                         </div>
                         <AuthButton type="submit" label="Add Tournament"/>
                     </form>
@@ -48,6 +57,9 @@ import { ref } from 'vue';
 import AuthButton from '../components/buttons/AuthButton.vue';
 import TheHeader from '../components/layout/TheHeader.vue';
 import BaseCard from '../components/ui/BaseCard.vue';
+import { CLOUDFLARE_FOLDER_NAMES } from '../features/constants';
+import { registerTournament, uploadPosterToR2 } from '../features/tournaments/tournamentApi';
+import { generateUniqueFileName } from '../features/tournaments/utils';
 
 
 const tournamentData = ref({
@@ -88,79 +100,120 @@ const tournamentData = ref({
     },
     image: {
         type: File,
+        fileName: '',
         value: null,
         required: false,
         isValid: true,
-        message: 'Image is required',
+        acceptedTypes: ['image/jpeg', 'image/png', 'image/jpg'],
+        maxSize: 2 * 1024 * 1024, // 2MB
     },
 });
 
 function validateField(field) {
-    tournamentData[field].isValid = true;
+    tournamentData.value[field].isValid = true;
 }
 
-function submitForm() {
+async function submitForm() {
+    console.log('submitForm');
     const isValid = validateForm();
 
     if (isValid) {
         const dataForm = {
-            name: this.tournamentData.name.value,
-            location: this.tournamentData.location.value,
-            startDate: this.tournamentData.startDate.value,
-            endDate: this.tournamentData.endDate.value,
-            description: this.tournamentData.description.value,
-            image: this.tournamentData.image.value,
+            name: tournamentData.value.name.value,
+            location: tournamentData.value.location.value,
+            startDate: tournamentData.value.startDate.value,
+            endDate: tournamentData.value.endDate.value,
+            description: tournamentData.value.description.value
         }
-        console.log('dataForm', dataForm);
+
+        if (tournamentData.value.image.isValid && tournamentData.value.image.fileName !== '') {
+            dataForm.posterReference = tournamentData.value.image.fileName;
+            console.log('määrab payload reference:', dataForm.posterReference);
+        }
+
+        // For temporary purpose only - move method to tournamentApi later if backend endpoint is ready
+        await uploadPosterToR2(dataForm.posterReference, tournamentData.value.image.value)
+        
+        try {
+            const response = await registerTournament(dataForm, tournamentData.value.image.value);
+            console.log('response', response);
+        } catch (error) {
+            console.error('error', error);
+        }
 
         return dataForm; //temporary return for testing
-
     } else {
-        return false;
+        alert('Form is not valid');
     }
 
-}
-function handleFileUpload() {
-    tournamentData.value.image = event.target.files[0];
-    console.log('file uploaded', tournamentData.value.image);
+};
+
+function handleFileUpload(e) {
+    const uploadedFile = e.target.files[0];
+    validateFile(uploadedFile);
+};
+
+function validateFile(file) {
+
+    if (!tournamentData.value.image.acceptedTypes.includes(file.type)) {
+        console.log(`File type is not accepted. File type: ${file.type}`);
+        tournamentData.value.image.isValid = false;
+        tournamentData.value.image.value = '';
+        tournamentData.value.image.fileName = '';
+        alert('File type is not accepted');
+
+        return false;
+    } else if (file.size > tournamentData.value.image.maxSize) {
+        console.log(`File size is too large to upload. File size: ${file.size}`);
+        tournamentData.value.image.isValid = false;
+        tournamentData.value.image.value = '';
+        tournamentData.value.image.fileName = '';
+        alert('File size is too large to upload');
+
+        return false;
+    } else {
+        tournamentData.value.image.isValid = true;
+        tournamentData.value.image.value = file;
+        tournamentData.value.image.fileName = generateUniqueFileName(CLOUDFLARE_FOLDER_NAMES.TOURNAMENT_POSTERS, file.name);
+        console.log('validateFile OK');
+    }
 };
 
 function validateForm() {
-    if (this.tournamentData.name.value === '') {
-        this.tournamentData.name.isValid = false;
-        this.tournamentData.formIsValid = false;
+    console.log('validateForm');
+    tournamentData.value.formIsValid = true;
+
+    if (tournamentData.value.name.value === '') {
+        tournamentData.value.name.isValid = false;
+        tournamentData.value.formIsValid = false;
     }
 
-    if (this.tournamentData.location.value === '') {
-        this.tournamentData.location.isValid = false;
-        this.tournamentData.formIsValid = false;
+    if (tournamentData.value.location.value === '') {
+        tournamentData.value.location.isValid = false;
+        tournamentData.value.formIsValid = false;
     }
 
-    if (this.tournamentData.startDate.value === '') {
-        this.tournamentData.startDate.isValid = false;
-        this.tournamentData.formIsValid = false;
+    if (tournamentData.value.startDate.value === '') {
+        tournamentData.value.startDate.isValid = false;
+        tournamentData.value.formIsValid = false;
     }
 
-    if (this.tournamentData.endDate.value === '') {
-        this.tournamentData.endDate.isValid = false;
-        this.tournamentData.formIsValid = false;
+    if (tournamentData.value.endDate.value === '' || (tournamentData.value.startDate.value && 
+    tournamentData.value.startDate.value > tournamentData.value.endDate.value)) {
+        tournamentData.value.endDate.isValid = false;
+        tournamentData.value.formIsValid = false;
     }
 
-    if (this.tournamentData.description.value === '') {
-        this.tournamentData.description.isValid = false;
+    if (tournamentData.value.description.value && tournamentData.value.description.value.length < 10) {
+        tournamentData.value.description.isValid = false;
     }
 
-    if (this.tournamentData.image.value === null) {
-        this.tournamentData.image.isValid = false;
-        this.tournamentData.formIsValid = false;
-    }
-
-    if (this.tournamentData.formIsValid) {
+    if (tournamentData.value.formIsValid) {
         console.log('form is valid');
     }
     
-    return this.tournamentData.formIsValid;
-}
+    return tournamentData.value.formIsValid;
+};
 
 </script>
 
@@ -173,17 +226,29 @@ function validateForm() {
 .field-long {
     display: flex;
     flex-direction: column;
+    margin-bottom: 1rem;
+}
+.field-long-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 }
 .field-short {
     display: flex;
     flex-direction: row;
     gap: 3rem;
 }
+.field-short-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    
+}
 input{
     height: 2rem;
     width: 100%;
     padding: 0.5rem;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     border-radius: 0.5rem;
     border: 1px solid #000000;
 }
@@ -195,8 +260,22 @@ textarea {
     border: 1px solid #000000;
     padding: 0.5rem;
 }
-.upload-image-text {
-    font-size: 0.9rem;
+.upload-image {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+.invalid {
+    border: 1px solid #ff0000;
+}
+.error {
+    color: #ff0000;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+label {
+    font-size: 0.8rem;
     color: #000000;
+    margin-bottom: 0.5rem;
 }
 </style>
