@@ -58,7 +58,8 @@ import AuthButton from '../components/buttons/AuthButton.vue';
 import TheHeader from '../components/layout/TheHeader.vue';
 import BaseCard from '../components/ui/BaseCard.vue';
 import { CLOUDFLARE_FOLDER_NAMES } from '../features/constants';
-import { registerTournament, uploadPosterToR2 } from '../features/tournaments/tournamentApi';
+import { uploadPosterToR2 } from '../features/tournaments/service';
+import { registerTournament } from '../features/tournaments/tournamentApi';
 import { generateUniqueFileName } from '../features/tournaments/utils';
 import { useUserStore } from '../features/user/userStore';
 
