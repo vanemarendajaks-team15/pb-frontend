@@ -1,0 +1,27 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www/html
+    ports:
+      - "8001:8000"
+      - "5173:5173"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://127.0.0.1:8001
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/html/database/database.sqlite
+      VITE_API_BASE_URL: http://127.0.0.1:8000/api
+      VITE_HOST: 0.0.0.0
+    volumes:
+      - ./:/var/www/html
+      - frontend_vendor:/var/www/html/vendor
+      - frontend_node_modules:/var/www/html/node_modules
+    tty: true
+    stdin_open: true
+
+volumes:
+  frontend_vendor:
+  frontend_node_modules:

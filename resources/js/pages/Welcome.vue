@@ -8,7 +8,7 @@ const tournamentStore = useTournamentStore();
 
 onMounted(() => {
     tournamentStore.loadHomepageTournaments();
-})
+});
 
 defineProps({
     canRegister: {
@@ -16,9 +16,6 @@ defineProps({
         default: false,
     },
 });
-
-
-
 </script>
 
 <template>
