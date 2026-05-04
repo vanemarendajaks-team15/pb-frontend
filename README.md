@@ -70,23 +70,25 @@
 2. go to repository folder
    * cd pb-frontend
 3. create environment file with terminal command
-    * cp .env.example .env
-4. run commands in terminal
+   * cp .env.example .env
+4. Setup Cloudflare R2
+   * All uploaded images sending to Cloudflare R2 bucket using R2-worker method
+   * Add r2-worker url to .env file variable VITE_R2_WORKER_URL
+5. run commands in terminal
    * npm i <- installs npm
    * composer i <- installs composer
    * npm run dev <i runs vite.js server
-   * composer run dev <- Starts application 
-5. open another terminal and run command
+6. open another terminal and run command
    * php artisan key:generate <- generates app key
    * php artisan migrate <- migrates database
-   * pht artisan serve <- runs artisan server on port 8001 <- back runs already on port 8000
-### Frontend should run on port 8000
- * You should see laravel 13 welcome page in your browser @ http://127.0.0.1:8001/
+   * php artisan serve <- runs artisan server on port 8001 <- back runs already on port 8000
+### Frontend should run on port 8001
+ * You should see welcome page in your browser @ http://127.0.0.1:8001/
 
 ## Running the project
 1. start apache server for backend
    * php artisan serve
 2. start development environment for frontend
-   * npm run dev
+   * composer run dev
 3. start apache server for frontend
    * php artisan serve
